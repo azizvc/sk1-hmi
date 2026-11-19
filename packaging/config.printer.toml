@@ -1,0 +1,12 @@
+[hmi]
+serial = "/dev/ttyS1"
+baud = 115200
+dry_run = false
+
+[moonraker]
+host = "127.0.0.1"
+port = 7125
+api_key = ""
+
+[log]
+level = "info"

@@ -1,0 +1,20 @@
+{
+  "model_hint": "TJC4827X243_011C",
+  "resolution": [480, 272],
+  "orientation": "landscape_0",
+  "baud": 115200,
+  "pages": [
+    {"id": 0, "name": "home", "background": "assets/backgrounds/home.png"},
+    {"id": 1, "name": "print", "background": "assets/backgrounds/print.png"},
+    {"id": 2, "name": "move", "background": "assets/backgrounds/move.png"},
+    {"id": 3, "name": "files", "background": "assets/backgrounds/files.png"},
+    {"id": 4, "name": "fans", "background": "assets/backgrounds/fans.png"},
+    {"id": 5, "name": "load", "background": "assets/backgrounds/load.png"},
+    {"id": 6, "name": "zoffset", "background": "assets/backgrounds/zoffset.png"},
+    {"id": 7, "name": "calibrate", "background": "assets/backgrounds/calibrate.png"},
+    {"id": 8, "name": "network", "background": "assets/backgrounds/network.png"},
+    {"id": 9, "name": "settings", "background": "assets/backgrounds/settings.png"}
+  ],
+  "global_nav_components": [90, 91, 92, 93, 94],
+  "notes": "Build in USART HMI using docs/component-map.md. Export TFT to hmi/export/sk1-hmi.tft"
+}

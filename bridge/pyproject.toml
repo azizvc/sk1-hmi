@@ -1,0 +1,18 @@
+[project]
+name = "sk1-hmi"
+version = "0.1.0"
+description = "TJC HMI bridge for TwoTrees SK1 + Moonraker"
+requires-python = ">=3.10"
+dependencies = [
+  "pyserial>=3.5",
+  "websockets>=12.0",
+  "Pillow>=10.0.0",
+  "aiohttp>=3.9.0",
+]
+
+[project.scripts]
+sk1-hmi = "sk1_hmi.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["sk1_hmi*"]

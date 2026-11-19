@@ -1,0 +1,20 @@
+[Unit]
+Description=SK1 HMI bridge (TJC UART <-> Moonraker)
+After=network.target moonraker.service
+Wants=moonraker.service
+Conflicts=makerbase-client.service
+
+[Service]
+Type=simple
+User=mks
+WorkingDirectory=/opt/sk1-hmi
+# '+' runs as root despite User=mks — needed for pinmux/gpio
+ExecStartPre=+/opt/sk1-hmi/uart-init.sh
+ExecStart=/home/mks/moonraker-env/bin/python -m sk1_hmi --config /etc/sk1-hmi/config.toml
+Restart=always
+RestartSec=2
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONPATH=/opt/sk1-hmi:/opt/sk1-hmi/deps
+
+[Install]
+WantedBy=multi-user.target

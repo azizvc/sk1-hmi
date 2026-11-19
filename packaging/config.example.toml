@@ -1,0 +1,14 @@
+[hmi]
+# Na SK1: /dev/ttyS1
+# No PC com USB-TTL: COM3 (Windows) ou /dev/ttyUSB0
+serial = "/dev/ttyS1"
+baud = 115200
+dry_run = true
+
+[moonraker]
+host = "127.0.0.1"
+port = 7125
+api_key = ""
+
+[log]
+level = "info"

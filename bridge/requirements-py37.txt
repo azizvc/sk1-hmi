@@ -1,0 +1,6 @@
+# SK1 stock Armbian: Python 3.7.3
+pyserial>=3.5,<4
+websockets>=10,<12
+tomli>=1.2.0,<3
+Pillow>=9.0.0,<10
+aiohttp>=3.8.0,<3.9

@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+tools/editors/
+*.tft
+hmi/export/*.tft
+.DS_Store
+Thumbs.db
+
+# Local deploy / scratch
+_deploy_stage/
+hmi/*-copy.HMI
+hmi/*-copy.HMI.ids.json
+hmi/backup-*.HMI
+hmi/sk1-test.HMI

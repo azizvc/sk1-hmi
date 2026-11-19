@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SK1 USART HMI mock · 480×272</title>
+  <link rel="stylesheet" href="styles.css?v=29" />
+</head>
+<body>
+  <div class="workspace">
+    <header class="chrome">
+      <h1>SK1 · mock USART HMI</h1>
+      <p>
+        Painel <strong>TJC4827X243_011C</strong> 480×272 estilo stock TwoTrees
+        (charcoal + amber glow) com fundos e sprites recortados das referências.
+        Componentes absolutos alinhados a <code>docs/component-map.md</code>.
+      </p>
+      <div class="toolbar">
+        <nav id="tabs"></nav>
+        <label><input type="checkbox" id="chk-guides" /> guias</label>
+        <label><input type="checkbox" id="chk-labels" /> labels</label>
+        <label><input type="checkbox" id="chk-targets" checked /> targets</label>
+      </div>
+    </header>
+    <div class="bezel">
+      <div id="screen" class="screen" aria-label="HMI 480x272"></div>
+    </div>
+  </div>
+  <aside class="side">
+    <h2>Inspector</h2>
+    <p class="meta" id="page-meta">—</p>
+    <div id="inspector"></div>
+    <h2 style="margin-top:18px">Componentes</h2>
+    <ul class="list" id="comp-list"></ul>
+    <p class="hint">
+      Clique nos botões da tela para testar estados (luz, fan, step 0.1/1/10mm,
+      Wi-Fi, pausa e navegação). Marque <code>guias</code> para ver as
+      hitboxes USART exatas.
+    </p>
+  </aside>
+  <script src="app.js?v=34"></script>
+</body>
+</html>

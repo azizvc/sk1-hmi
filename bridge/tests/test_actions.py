@@ -11,11 +11,11 @@ def test_route_home_print_button():
 
 
 def test_wifi_opens_network_for_ip():
-    # p_wifi → network (t_ip)
+    # p_wifi só em home (0) e print (1)
     assert route_touch(0, 8).kind == IntentKind.NAV_NETWORK
     assert route_touch(1, 2).kind == IntentKind.NAV_NETWORK
-    assert route_touch(2, 15).kind == IntentKind.NAV_NETWORK
-    assert route_touch(4, 4).kind == IntentKind.NAV_NETWORK
+    assert route_touch(2, 15) is None or route_touch(2, 15).kind != IntentKind.NAV_NETWORK
+    assert route_touch(4, 4) is None or route_touch(4, 4).kind != IntentKind.NAV_NETWORK
     s = AppState()
     s2, effects = apply_intent(s, UiIntent(IntentKind.NAV_NETWORK))
     assert s2.ui.screen.name == "NETWORK"
@@ -26,10 +26,12 @@ def test_load_and_unload_routes_and_effects():
     s = AppState()
     s.temps.hotend = 25.0
     s.load.target = 240
-    # ids reais (hmi/sk1-hmi.HMI.ids.json): page 2 move — b_tab_load=17
-    assert route_touch(2, 17).kind == IntentKind.NAV_LOAD
-    assert route_touch(5, 6).kind == IntentKind.NAV_MOVE
-    assert route_touch(5, 8).kind == IntentKind.NAV_FANS
+    # ids reais (hmi/sk1-hmi.HMI.ids.json): move b_tab_load=16; loadunload tabs 1..3
+    assert route_touch(2, 16).kind == IntentKind.NAV_LOAD
+    assert route_touch(5, 1).kind == IntentKind.NAV_MOVE
+    assert route_touch(5, 3).kind == IntentKind.NAV_FANS
+    assert route_touch(5, 16).kind == IntentKind.LOAD_FILAMENT
+    assert route_touch(5, 17).kind == IntentKind.UNLOAD_FILAMENT
 
     s2, eff = apply_intent(s, UiIntent(IntentKind.LOAD_FILAMENT))
     assert s2.load.mode == "load"

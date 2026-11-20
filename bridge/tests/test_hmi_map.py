@@ -96,10 +96,11 @@ def test_move_routes_match_geometry(pages):
 
     assert _cid(pages, "move", "b_tab_move") == 6
     assert route_touch(2, 6).kind == IntentKind.NAV_MOVE
-    assert _cid(pages, "move", "b_tab_load") == 17
-    assert route_touch(2, 17).kind == IntentKind.NAV_LOAD
-    assert _cid(pages, "move", "b_tab_fan") == 18
-    assert route_touch(2, 18).kind == IntentKind.NAV_FANS
+    assert _cid(pages, "move", "b_tab_load") == 16
+    assert route_touch(2, 16).kind == IntentKind.NAV_LOAD
+    assert _cid(pages, "move", "b_tab_fan") == 17
+    assert route_touch(2, 17).kind == IntentKind.NAV_FANS
+    assert "p_wifi" not in _names(pages, "move").values()
 
 
 def test_files_routes(pages):
@@ -129,23 +130,50 @@ def test_fans_tabs_and_sliders(pages):
     assert route_touch(4, 1).kind == IntentKind.NAV_MOVE
     assert route_touch(4, 2).kind == IntentKind.NAV_LOAD
     assert route_touch(4, 3).kind == IntentKind.NAV_FANS
-    assert _cid(pages, "fans", "h_part") == 8
-    assert _cid(pages, "fans", "h_side") == 9
-    assert _cid(pages, "fans", "h_filter") == 10
-    assert route_slider(4, 8, 55).kind == IntentKind.SET_PART_FAN
-    assert route_slider(4, 9, 55).kind == IntentKind.SET_SIDE_FAN
-    assert route_slider(4, 10, 55).kind == IntentKind.SET_FILTER_FAN
-    assert route_slider(4, 8, 55).value == 55.0
+    assert "p_wifi" not in _names(pages, "fans").values()
+    assert _cid(pages, "fans", "h_part") == 7
+    assert _cid(pages, "fans", "h_side") == 8
+    assert _cid(pages, "fans", "h_filter") == 9
+    assert route_slider(4, 7, 55).kind == IntentKind.SET_PART_FAN
+    assert route_slider(4, 8, 55).kind == IntentKind.SET_SIDE_FAN
+    assert route_slider(4, 9, 55).kind == IntentKind.SET_FILTER_FAN
+    assert route_slider(4, 7, 55).value == 55.0
 
 
-@pytest.mark.skipif(True, reason="página lights ainda ausente do .HMI")
-def test_lights_tabs(pages):
+def test_loadunload_tabs_and_actions(pages):
     from sk1_hmi.ui.intent import IntentKind
     from sk1_hmi.ui.route import route_touch
 
-    names = _names(pages, "lights")
-    assert names[6] == "b_tab_move"
-    assert route_touch(5, 6).kind == IntentKind.NAV_MOVE
+    page = "loadunload" if "loadunload" in pages else "lights"
+    assert _cid(pages, page, "b_tab_move") == 1
+    assert _cid(pages, page, "b_tab_load") == 2
+    assert _cid(pages, page, "b_tab_fan") == 3
+    assert route_touch(5, 1).kind == IntentKind.NAV_MOVE
+    assert route_touch(5, 2).kind == IntentKind.NAV_LOAD
+    assert route_touch(5, 3).kind == IntentKind.NAV_FANS
+    assert _cid(pages, page, "b_temp_m") == 14
+    assert _cid(pages, page, "b_temp_p") == 15
+    assert _cid(pages, page, "b_load") == 16
+    assert _cid(pages, page, "b_unload") == 17
+    assert route_touch(5, 14).kind == IntentKind.LOAD_TEMP_STEP
+    assert route_touch(5, 14).amount == -10
+    assert route_touch(5, 15).amount == 10
+    assert route_touch(5, 16).kind == IntentKind.LOAD_FILAMENT
+    assert route_touch(5, 17).kind == IntentKind.UNLOAD_FILAMENT
+    assert _cid(pages, page, "nav_home") == 4
+    assert _cid(pages, page, "nav_print") == 8
+    assert route_touch(5, 4).kind == IntentKind.NAV_HOME
+    assert route_touch(5, 8).kind == IntentKind.NAV_PRINT
+    assert "p_wifi" not in _names(pages, page).values()
+
+
+def test_wifi_only_on_home_and_print(pages):
+    wifi_pages = {
+        name
+        for name, comps in pages.items()
+        if any(e["name"] == "p_wifi" for e in comps.values())
+    }
+    assert wifi_pages == {"home", "print"}
 
 
 def test_no_route_points_at_a_text_object(pages):

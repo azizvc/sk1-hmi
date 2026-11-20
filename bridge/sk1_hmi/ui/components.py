@@ -10,7 +10,7 @@ def page_name(screen: Screen) -> str:
         Screen.MOVE: "move",
         Screen.FILES: "files",
         Screen.FANS: "fans",
-        Screen.LOAD: "lights",
+        Screen.LOAD: "loadunload",
         Screen.ZOFFSET: "zoffset",
         Screen.CALIBRATE: "calibrate",
         Screen.NETWORK: "network",

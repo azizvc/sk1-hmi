@@ -87,17 +87,17 @@ def test_render_load_idle_and_active():
     s.temps.hotend_target = 0
     cmds = render_full(s)
     assert "page 5" in cmds
-    assert 'lights.t_set_temp.txt="240°C"' in cmds
+    assert 'loadunload.t_set_temp.txt="240°C"' in cmds
 
     s.load.mode = "unload"
     s.load.step = 2
     s.temps.hotend = 240
     s.temps.hotend_target = 240
     cmds_act = render_full(s)
-    assert 'lights.t_mode.txt="Unload"' in cmds_act
-    assert 'lights.t_step2.txt="Unload..."' in cmds_act
-    assert 'lights.t_step3.txt="Return completed"' in cmds_act
-    assert 'lights.t_hotend.txt="240°C"' in cmds_act
+    assert 'loadunload.t_mode.txt="Unload"' in cmds_act
+    assert 'loadunload.t_step2.txt="Unload..."' in cmds_act
+    assert 'loadunload.t_step3.txt="Return completed"' in cmds_act
+    assert 'loadunload.t_hotend.txt="240°C"' in cmds_act
     assert not any(c.startswith("vis ") for c in cmds_act)
 
 

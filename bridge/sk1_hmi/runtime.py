@@ -223,6 +223,18 @@ class Runtime:
         self.state.network.ssid = net.get("ssid", "") or self.state.network.ssid
         log.info("network ip=%s host=%s", self.state.network.ip or "-", self.state.network.hostname or "-")
 
+    async def _refresh_file_list(self) -> None:
+        try:
+            files = await self.moonraker.list_files()
+        except Exception as exc:  # noqa: BLE001
+            log.debug("file list refresh failed: %s", exc)
+            return
+        self.state.files.entries = files
+        self.state.files.offset = 0
+        if self.state.files.selected >= len(files):
+            self.state.files.selected = 0
+        log.info("files refreshed count=%d newest=%s", len(files), files[0] if files else "-")
+
     async def _http_poll_loop(self) -> None:
         """HTTP backup so temps/print progress keep updating if WS notifies lag."""
         while True:
@@ -248,6 +260,8 @@ class Runtime:
             if effect.kind == EffectKind.PAGE:
                 if effect.page == Screen.NETWORK.value:
                     await self._refresh_network_info()
+                elif effect.page == Screen.FILES.value:
+                    await self._refresh_file_list()
                 await self.hmi.send(f"page {effect.page}")
                 await self.hmi.send_many(render_full(self.state))
             elif effect.kind == EffectKind.SET_BRIGHTNESS:

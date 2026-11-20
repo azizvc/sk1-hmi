@@ -10,6 +10,23 @@ import aiohttp
 
 log = logging.getLogger(__name__)
 
+
+def sort_files_newest_first(items: list[Any]) -> list[str]:
+    """Sort Moonraker ``/server/files/list`` rows by ``modified`` desc, then name."""
+    rows: list[tuple[float, str]] = []
+    for item in items:
+        if not isinstance(item, dict) or "path" not in item:
+            continue
+        path = str(item["path"])
+        try:
+            modified = float(item.get("modified") or 0)
+        except (TypeError, ValueError):
+            modified = 0.0
+        rows.append((modified, path))
+    rows.sort(key=lambda row: (-row[0], row[1].lower()))
+    return [path for _, path in rows]
+
+
 # Keep subscribe set conservative for stock SK1 / old Moonraker
 SUBSCRIBE_OBJECTS = {
     "print_stats": None,
@@ -85,14 +102,9 @@ class MoonrakerClient:
         await self._http_post("/printer/gcode/script", {"script": script})
 
     async def list_files(self) -> list[str]:
+        """Return gcode paths sorted newest-first (Moonraker ``modified``)."""
         result = await self._http_get("/server/files/list", {"root": "gcodes"})
-        if not isinstance(result, list):
-            return []
-        names: list[str] = []
-        for item in result:
-            if isinstance(item, dict) and "path" in item:
-                names.append(str(item["path"]))
-        return sorted(names)
+        return sort_files_newest_first(result if isinstance(result, list) else [])
 
     async def query_objects(self, objects: dict[str, Any]) -> dict[str, Any]:
         result = await self._http_post("/printer/objects/query", {"objects": objects})

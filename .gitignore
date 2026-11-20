@@ -7,8 +7,6 @@ dist/
 build/
 .pytest_cache/
 tools/editors/
-*.tft
-hmi/export/*.tft
 .DS_Store
 Thumbs.db
 
